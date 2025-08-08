@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kayple_test/data/post/repository/post_repository_impl.dart';
 import 'package:kayple_test/domain/post/entity/post_entity.dart';
 import 'package:kayple_test/presenter/base/base_state.dart';
+import 'package:kayple_test/presenter/post/screens/post_detail_screen.dart';
 import 'package:kayple_test/presenter/post/view_models/post_list_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +72,10 @@ final class _PostListArea extends StatelessWidget {
                     ),
                     subtitle: Text(postList[index].body),
                     onTap: () {
-                      // app TODO: 네비게이션 게시글 상세
+                      navigateToPostDetail(
+                        context: context,
+                        postEntity: postList[index],
+                      );
                     },
                   );
                 },
@@ -83,6 +87,20 @@ final class _PostListArea extends StatelessWidget {
             }
         }
       },
+    );
+  }
+
+  void navigateToPostDetail({
+    required BuildContext context,
+    required PostEntity postEntity,
+  }) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) =>
+                PostDetailScreen(postId: postEntity.id, postEntity: postEntity),
+      ),
     );
   }
 }
