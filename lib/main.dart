@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kayple_test/core/utils/error_handler.dart';
+import 'package:kayple_test/data/post/repository/post_repository_impl.dart';
+import 'package:kayple_test/data/post/source/json_place_holder_source.dart';
+import 'package:provider/provider.dart';
 
 import 'presenter/post/screens/post_list_screen.dart';
 
@@ -12,7 +15,20 @@ void main() {
     PlatformDispatcher.instance.onError =
         ErrorHandler.handlePlatformDispatcherError;
 
-    runApp(const MyApp());
+    runApp(
+      MultiProvider(
+        providers: [
+          Provider(
+            create:
+                (_) => PostRepositoryImpl(
+                  remotePostDataSource: JsonPlaceHolderPostDataSource(),
+                ),
+            lazy: true,
+          ),
+        ],
+        child: const MyApp(),
+      ),
+    );
   }, ErrorHandler.handleUncaughtError);
 }
 
